@@ -1,21 +1,21 @@
 precommit: generate fmt license test
 
 test:
-	@go test -race $(shell go list ./... | grep -v vendor)
+	@go test -race $(shell go list ./...)
 fmt:
-	@go fmt $(shell go list ./... | grep -v vendor | grep -v testdata)
+	@go fmt $(shell go list ./... | grep -v testdata)
 license:
 	@go run $(GOPATH)/src/github.com/limetext/tasks/gen_license.go
 generate:
 	@go generate $(shell go list ./... | grep -v /vendor/)
 fast_test:
-	@go test $(shell go list ./... | grep -v vendor)
+	@go test $(shell go list ./...)
 report:
 	@go run cmd/report/main.go
 
 check_fmt:
-ifneq ($(shell gofmt -l ./ | grep -v vendor | grep -v testdata),)
-	$(error code not fmted, run make fmt. $(shell gofmt -l ./ | grep -v vendor | grep -v testdata))
+ifneq ($(shell gofmt -l ./ | grep -v testdata),)
+	$(error code not fmted, run make fmt. $(shell gofmt -l ./ | grep -v testdata))
 endif
 check_license:
 	@go run $(GOPATH)/src/github.com/limetext/tasks/gen_license.go -check
@@ -26,10 +26,6 @@ endif
 
 tasks:
 	go get -d -u github.com/limetext/tasks
-
-glide:
-	go get -v -u github.com/Masterminds/glide
-	glide install
 
 cover_dep:
 	go get -v -u github.com/mattn/goveralls
