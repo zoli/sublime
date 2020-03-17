@@ -11,7 +11,7 @@ import (
 	"github.com/limetext/backend"
 	"github.com/limetext/backend/packages"
 	_ "github.com/limetext/commands"
-	_ "github.com/limetext/sublime/api"
+	// _ "github.com/limetext/sublime/api"
 )
 
 var (
@@ -21,17 +21,17 @@ var (
 	csPath     = filepath.Join(pkgPath, "Twilight.tmTheme")
 )
 
-func TestLoadPlugin(t *testing.T) {
-	pkg := newPKG(pkgPath).(*pkg)
-	pkg.loadPlugin(pluginPath)
-	checkPlugin(pkg, t)
-}
+// func TestLoadPlugin(t *testing.T) {
+// 	pkg := newPKG(pkgPath).(*pkg)
+// 	pkg.loadPlugin(pluginPath)
+// 	checkPlugin(pkg, t)
+// }
 
-func TestLoadPlugins(t *testing.T) {
-	pkg := newPKG(pkgPath).(*pkg)
-	pkg.loadPlugins()
-	checkPlugin(pkg, t)
-}
+// func TestLoadPlugins(t *testing.T) {
+// 	pkg := newPKG(pkgPath).(*pkg)
+// 	pkg.loadPlugins()
+// 	checkPlugin(pkg, t)
+// }
 
 func TestLoadColorScheme(t *testing.T) {
 	pkg := newPKG(pkgPath).(*pkg)
@@ -45,11 +45,11 @@ func TestLoadSyntax(t *testing.T) {
 	checkSyntax(pkg, t)
 }
 
-func checkPlugin(p *pkg, t *testing.T) {
-	if _, exist := p.plugins[pluginPath]; !exist {
-		t.Errorf("Expected to %s exist in %s package plugins", pluginPath, p.Name())
-	}
-}
+// func checkPlugin(p *pkg, t *testing.T) {
+// 	if _, exist := p.plugins[pluginPath]; !exist {
+// 		t.Errorf("Expected to %s exist in %s package plugins", pluginPath, p.Name())
+// 	}
+// }
 
 func checkColorScheme(p *pkg, t *testing.T) {
 	if _, ok := p.colorSchemes[csPath]; !ok {

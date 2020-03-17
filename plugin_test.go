@@ -4,31 +4,31 @@
 
 package sublime
 
-import (
-	"testing"
+// import (
+// 	"testing"
 
-	"github.com/limetext/backend"
-	"github.com/limetext/gopy"
-	_ "github.com/limetext/sublime/api"
-)
+// 	"github.com/limetext/backend"
+// 	"github.com/limetext/gopy"
+// 	_ "github.com/limetext/sublime/api"
+// )
 
-func TestPlugin(t *testing.T) {
-	newPlugin("testdata/plugin.py").Load()
-	pyTest(t, "plugin_test")
-}
+// func TestPlugin(t *testing.T) {
+// 	newPlugin("testdata/plugin.py").Load()
+// 	pyTest(t, "plugin_test")
+// }
 
-func pyTest(t *testing.T, imp string) {
-	l := py.NewLock()
-	defer l.Unlock()
-	if _, err := py.Import(imp); err != nil {
-		t.Errorf("Error importing %s: %s", imp, err)
-	}
-}
+// func pyTest(t *testing.T, imp string) {
+// 	l := py.NewLock()
+// 	defer l.Unlock()
+// 	if _, err := py.Import(imp); err != nil {
+// 		t.Errorf("Error importing %s: %s", imp, err)
+// 	}
+// }
 
-func init() {
-	pyAddPath("testdata")
+// func init() {
+// 	pyAddPath("testdata")
 
-	ed := backend.GetEditor()
-	ed.Init()
-	ed.NewWindow()
-}
+// 	ed := backend.GetEditor()
+// 	ed.Init()
+// 	ed.NewWindow()
+// }

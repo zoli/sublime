@@ -5,7 +5,6 @@
 package sublime
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -13,8 +12,8 @@ import (
 	"github.com/limetext/backend/keys"
 	"github.com/limetext/backend/log"
 	"github.com/limetext/backend/packages"
-	_ "github.com/limetext/sublime/api"
 	"github.com/limetext/text"
+	// _ "github.com/limetext/sublime/api"
 )
 
 // Represents a sublime package
@@ -27,9 +26,9 @@ type pkg struct {
 	platformSettings *text.HasSettings
 	defaultSettings  *text.HasSettings
 	defaultKB        *keys.HasKeyBindings
-	plugins          map[string]*plugin
-	syntaxes         map[string]*syntax
-	colorSchemes     map[string]*colorScheme
+	// plugins          map[string]*plugin
+	syntaxes     map[string]*syntax
+	colorSchemes map[string]*colorScheme
 }
 
 func newPKG(dir string) packages.Package {
@@ -39,9 +38,9 @@ func newPKG(dir string) packages.Package {
 		platformSettings: new(text.HasSettings),
 		defaultSettings:  new(text.HasSettings),
 		defaultKB:        new(keys.HasKeyBindings),
-		plugins:          make(map[string]*plugin),
-		syntaxes:         make(map[string]*syntax),
-		colorSchemes:     make(map[string]*colorScheme),
+		// plugins:          make(map[string]*plugin),
+		syntaxes:     make(map[string]*syntax),
+		colorSchemes: make(map[string]*colorScheme),
 	}
 
 	ed := backend.GetEditor()
@@ -74,9 +73,9 @@ func (p *pkg) Load() {
 	p.loadUserSettings(backend.GetEditor().UserPath())
 	// When we failed on importing sublime_plugin module we continue
 	// loading packages but not package plugins
-	if module != nil {
-		p.loadPlugins()
-	}
+	// if module != nil {
+	// 	p.loadPlugins()
+	// }
 	// load files that could be anywhere in the package dir like syntax,
 	// colour scheme and preferences
 	filepath.Walk(p.Path(), p.scan)
@@ -95,26 +94,26 @@ func (p *pkg) Name() string {
 // TODO: how we should watch the package and the files containing?
 func (p *pkg) FileCreated(name string) {}
 
-func (p *pkg) loadPlugins() {
-	log.Fine("Loading %s plugins", p.Name())
-	fis, err := ioutil.ReadDir(p.Path())
-	if err != nil {
-		log.Warn("Error on reading directory %s, %s", p.Path(), err)
-		return
-	}
-	for _, fi := range fis {
-		if isPlugin(fi.Name()) {
-			p.loadPlugin(filepath.Join(p.Path(), fi.Name()))
-		}
-	}
-}
+// func (p *pkg) loadPlugins() {
+// 	log.Fine("Loading %s plugins", p.Name())
+// 	fis, err := ioutil.ReadDir(p.Path())
+// 	if err != nil {
+// 		log.Warn("Error on reading directory %s, %s", p.Path(), err)
+// 		return
+// 	}
+// 	for _, fi := range fis {
+// 		if isPlugin(fi.Name()) {
+// 			p.loadPlugin(filepath.Join(p.Path(), fi.Name()))
+// 		}
+// 	}
+// }
 
-func (p *pkg) loadPlugin(path string) {
-	pl := newPlugin(path)
-	pl.Load()
+// func (p *pkg) loadPlugin(path string) {
+// 	pl := newPlugin(path)
+// 	pl.Load()
 
-	p.plugins[path] = pl.(*plugin)
-}
+// 	p.plugins[path] = pl.(*plugin)
+// }
 
 func (p *pkg) loadColorScheme(path string) {
 	log.Fine("Loading %s package color scheme %s", p.Name(), path)
@@ -213,19 +212,9 @@ func isPKG(dir string) bool {
 var packageRecord = &packages.Record{isPKG, newPKG}
 
 func onInit() {
-	// Assuming there is a sublime_plugin.py file in the current directory
-	// for that we should add current directory to python paths
-	// Every package that imports sublime package should have a copy of
-	// sublime_plugin.py file in the "." directory
-	pyAddPath(".")
 	packages.Register(packageRecord)
-	var err error
-	if module, err = pyImport("sublime_plugin"); err != nil {
-		log.Error("Error importing sublime_plugin: %s", err)
-		return
-	}
-	backend.OnPackagesPathAdd.Add(pyAddPath)
-	packages.Register(pluginRecord)
+	// backend.OnPackagesPathAdd.Add(pyAddPath)
+	// packages.Register(pluginRecord)
 }
 
 func init() {
