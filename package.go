@@ -70,7 +70,9 @@ func (p *pkg) Load() {
 	log.Debug("Loading package %s", p.Name())
 	p.loadKeyBindings()
 	p.loadSettings()
-	p.loadUserSettings(backend.GetEditor().UserPath())
+	if path := backend.GetEditor().UserPath(); path != "" {
+		p.loadUserSettings(path)
+	}
 	// When we failed on importing sublime_plugin module we continue
 	// loading packages but not package plugins
 	// if module != nil {
